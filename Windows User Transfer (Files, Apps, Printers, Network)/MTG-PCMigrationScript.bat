@@ -130,17 +130,16 @@ if "%web%"=="x" exit
 
 if not exist "\\%backUP%\MTGTransfer\%identiKey%" mkdir "\\%backUP%\MTGTransfer\%identiKey%"
 
-if not exist "\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files" mkdir "\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files"
+if not exist "\\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files" mkdir "\\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files"
 
 
 echo At any time, if you want to stop this backup process, hit Ctrl-C.
 echo Backing up your main profile
-Robocopy.exe "%SystemDrive%\users\%identiKey%" "\\%backUP%\MTGTransfer\%identiKey%" /XJ /XO /XA:SH /S /Z /R:1 /W:1 /MT:32 /V /XD "%SystemDrive%\Users\%identiKey%\Google Drive" /XD "%SystemDrive%\users\%identiKey%\AppData" /XD "%SystemDrive%\Users\%identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\Dropbox" /XD "%SystemDrive%\Users\%identiKey%\SpiderOak" /XD "%SystemDrive%\Users\%identiKey%\Box" /LOG+:"\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\%timeStamp%_BackupLog.txt"
+Robocopy.exe "%SystemDrive%\users\%identiKey%" "\\%backUP%\MTGTransfer\%identiKey%" /E /XJ /XO /XA:SH /S /Z /R:1 /W:1 /MT:32 /V /XD "%SystemDrive%\Users\%identiKey%\Google Drive" /XD "%SystemDrive%\users\%identiKey%\AppData" /XD "%SystemDrive%\Users\%identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\Dropbox" /XD "%SystemDrive%\Users\%identiKey%\SpiderOak" /XD "%SystemDrive%\Users\%identiKey%\Box" /LOG+:"\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\%timeStamp%_BackupLog.txt"
 
 echo At any time, if you want to stop this backup process, hit Ctrl-C.
 echo Backing up your main profile (one last time around to refresh the log file and catch any other changes)
-Robocopy.exe "%SystemDrive%\users\%identiKey%" "\\%backUP%\MTGTransfer
-\%identiKey%" /XJ /XO /XA:SH /XD "%SystemDrive%\users\%identiKey%\AppData" /XD "%SystemDrive%\Users\%identiKey%\Google Drive" /XD "%SystemDrive%\Users\identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\Google Drive" /XD "%SystemDrive%\Users\%identiKey%\ODBA" /XD "%SystemDrive%\Users\%identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\Dropbox" /S /Z /R:1 /W:1 /MT:32 /V  /LOG+:"\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\%timeStamp%_BackupLog.txt"
+Robocopy.exe "%SystemDrive%\users\%identiKey%" "\\%backUP%\MTGTransfer\%identiKey%" /E /XJ /XO /XA:SH /XD "%SystemDrive%\users\%identiKey%\AppData" /XD "%SystemDrive%\Users\%identiKey%\Google Drive" /XD "%SystemDrive%\Users\identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\Google Drive" /XD "%SystemDrive%\Users\%identiKey%\ODBA" /XD "%SystemDrive%\Users\%identiKey%\OneDrive" /XD "%SystemDrive%\Users\%identiKey%\Dropbox" /S /Z /R:1 /W:1 /MT:32 /V  /LOG+:"\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\%timeStamp%_BackupLog.txt"
 
 
 
@@ -153,20 +152,21 @@ if "%web%"=="x" exit
 
 :OldPC-step4
 REM Installed Apps List
-wmic /output:"\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\OldPC-InstalledApps.txt" product get name,version
-echo File saved to \\%backUP%\Users\%identiKey%\MTGTransfer-Logs-Files\ - OldPC-InstalledApps.txt
+wmic /output:"\\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files\OldPC-InstalledApps.txt" product get name,version
+echo File saved to \\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files\ - OldPC-InstalledApps.txt
 
 REM Map Drive reg file
-reg export "HKEY_CURRENT_USER\Network" "\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\OldPCMapDriveShares.REG"
-echo Completed Map Drive Export to \\%backUP%\Users\%identiKey%\MTGTransfer-Logs-Files\ - OldPCMapDriveShares.REG
+reg export "HKEY_CURRENT_USER\Network" "\\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files\OldPCMapDriveShares.REG"
+echo Completed Map Drive Export to \\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files\ - OldPCMapDriveShares.REG
 
 REM Printer File 
-C:\windows\system32\spool\tools\printBrm.exe -b -f "\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\OldPC-Printers.printer_export" -o force
-echo Printer file exported to \\%backUP%\Users\%identiKey%\MTGTransfer-Logs-Files\ - OldPC-Printers.printer_export
+C:\windows\system32\spool\tools\printBrm.exe -b -f C:\OldPC-Printers.printer_export -o force
+move C:\OldPC-Printers.printer_export \\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files\
+echo Printer file exported to \\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files\ - OldPC-Printers.printer_export
 
 REM System Information File
-systeminfo.exe > "\\%backUP%\MTGTransfer\MTGTransfer-Logs-Files\OldPC-Specs.txt"
-echo Old PC specs file exported to \\%backUP%\Users\%identiKey%\MTGTransfer-Logs-Files\ - OldPC-Specs.txt
+systeminfo.exe > "\\%backUP%\MTGTransfer\%identiKey%\MTGTransfer-Logs-Files\OldPC-Specs.txt"
+echo Old PC specs file exported to \\%backUP%- OldPC-Specs.txt
 
 
 :Finished
