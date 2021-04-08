@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WindowsCustomizations>
+  <PackageConfig xmlns="urn:schemas-Microsoft-com:Windows-ICD-Package-Config.v1.0">
+    <ID>{ab4b827d-dfda-4c02-a6b1-81843d9405c6}</ID>
+    <Name>MTG Deployment V1.0</Name>
+    <Version>1.1</Version>
+    <OwnerType>ITAdmin</OwnerType>
+    <Rank>0</Rank>
+    <Notes />
+  </PackageConfig>
+  <Settings xmlns="urn:schemas-microsoft-com:windows-provisioning">
+    <Customizations>
+      <Common>
+        <Accounts>
+          <ComputerAccount>
+            <ComputerName>MTG-%SERIAL%</ComputerName>
+          </ComputerAccount>
+          <Users>
+            <User UserName="MTG" Name="MTG">
+              <HomeDir>C:\Users\MTG\</HomeDir>
+              <Password>mtg-1234!</Password>
+              <UserGroup>Administrators</UserGroup>
+            </User>
+          </Users>
+        </Accounts>
+        <OOBE>
+          <Desktop>
+            <EnableCortanaVoice>False</EnableCortanaVoice>
+            <HideOobe>True</HideOobe>
+          </Desktop>
+        </OOBE>
+        <ProvisioningCommands>
+          <PrimaryContext>
+            <Command>
+              <CommandConfig Name="Power:SleepTime-NoSleep">
+                <CommandLine>powercfg /change standby-timeout-ac 0</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="ScreenConnect-Download&amp;Install">
+                <CommandLine>curl "http://sc.masiero.us:8040/Bin/Masiero-Remote_Support.ClientSetup.msi?h=sc.masiero.us&amp;p=8041&amp;k=BgIAAACkAABSU0ExAAgAABEAAADBLgb6W%2Bwno2NIfSXd7NtxMrr2edPbVrtA5%2B64KRECP9xSvLj1afGVhMJX93zWs9sMQbDKIzWvdNZHdaJQF4wU4CBk3Orgt%2BppbweaQWAxyaNyRHGGzz8os6kxSydCzQaUajpRv8ELU6nN7vtPqqP0cpuTGCHCgN7K7qte9JzhAooewTBwR1ZVKOvIMS9eVGdLBooNLEU3wtk3960%2Bc%2F1kh%2BZPSrSMDhn5JLPRIHqesfxmLkHpIyngvWGOmCOQzMiwn%2Bi4hT0rLlEQQvl29xsawUcRYH3pcYmhBazLPxeU59m6UXpOce5Gqx%2BBoLzGPVpZQSIi3xfxMw5xrvkcig%2BU&amp;e=Access&amp;y=Guest&amp;t=&amp;c=&amp;c=&amp;c=&amp;c=windows&amp;c=&amp;c=&amp;c=&amp;c=" --output C:\sc.msi &amp;&amp; msiexec /i C:\sc.msi</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="PowerShell-ExecutionPolicy-ChocoPrep">
+                <CommandLine>powershell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="Set-TimeZone">
+                <CommandLine>tzutil /s "Eastern Standard Time"</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="Reg-Manuf-Masiero">
+                <CommandLine>reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation /v Manufacturer /t REG_SZ /d Masiero /f</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="Reg-Support-Masiero">
+                <CommandLine>reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation /v SupportAppURL /t REG_SZ /d Masiero-Support /f</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="Reg-SupportURL-Masiero">
+                <CommandLine>reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation /v SupportURL /t REG_SZ /d http://help.masiero.tech /f</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="Curl-TX-MasieroLogo">
+                <CommandLine>curl "http://tx.masiero.us:8088/get/fqPpW/masiero-text-only-png_smaller%20%282%29.png" --output C:\windows\mtg.bmp</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="Reg-Manuf-MasieroLogo">
+                <CommandLine>reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\OEMInformation /v Logo /t REG_SZ /d C:\windows\mtg.bmp /f</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+              <CommandConfig Name="Choco-AppInstalls">
+                <CommandLine>choco install adobereader googlechrome firefox puppet-bolt office365business -y</CommandLine>
+                <ContinueInstall>True</ContinueInstall>
+                <RestartRequired>False</RestartRequired>
+              </CommandConfig>
+            </Command>
+          </PrimaryContext>
+        </ProvisioningCommands>
+        <Time>
+          <ProvisionSetTimeZone>True</ProvisionSetTimeZone>
+        </Time>
+      </Common>
+    </Customizations>
+  </Settings>
+</WindowsCustomizations>

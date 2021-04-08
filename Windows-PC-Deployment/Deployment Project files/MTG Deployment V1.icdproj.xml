@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ICDProject
+  Name="MTG Deployment V1.0"
+  Description="MTG Windows 10 Deployment V1.0"
+  Version="10.0.19041.1"
+  Id="{ab4b827d-dfda-4c02-a6b1-81843d9405c6}"
+  TemplateName="Provisioning package"
+  TemplateType="ProvisioningPackage">
+  <TargetEditions>
+    <Sku>
+      <StoreType>File</StoreType>
+      <Name>All Windows desktop editions</Name>
+      <SourcePath>Microsoft-Desktop-Provisioning.dat</SourcePath>
+      <Edition>Desktop</Edition>
+      <Version>10.0</Version>
+      <Description>Selecting this option will display settings that are specific to the desktop editions as well as settings that are common to all Windows editions.</Description>
+    </Sku>
+  </TargetEditions>
+</ICDProject>
